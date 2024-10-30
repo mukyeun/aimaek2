@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { registerValidator, loginValidator, validate } = require('../middleware/validators');
 
-// 회원가입
-router.post('/register', async (req, res) => {
+// 회원가입 - 유효성 검사 미들웨어 추가
+router.post('/register', registerValidator, validate, async (req, res) => {
     try {
         const { name, email, password, contact, height, weight, bloodSugar, temperature } = req.body;
 
@@ -43,8 +44,8 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// 로그인
-router.post('/login', async (req, res) => {
+// 로그인 - 유효성 검사 미들웨어 추가
+router.post('/login', loginValidator, validate, async (req, res) => {
     try {
         const { email, password } = req.body;
 
